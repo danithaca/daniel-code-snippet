@@ -164,7 +164,7 @@ def precision_recall(label, ours, base):
     print "Warning: recall denominator zero!"
     recall = 0.0
   else:
-    float(true_positive)/float(base_num) 
+    recall = float(true_positive)/float(base_num) 
   return precision, recall, true_positive, ours_num, base_num
 
 
