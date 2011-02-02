@@ -155,7 +155,17 @@ def precision_recall(label, ours, base):
   base_num = sum([1 if b==label else 0 for b in base])
   ours_num = sum([1 if o==label else 0 for o in ours])
   true_positive = sum([1 if b==label and o==label else 0 for b, o in zip(base, ours)])
-  return float(true_positive)/float(ours_num), float(true_positive)/float(base_num), true_positive, ours_num, base_num
+  if ours_num == 0:
+    print "Warning: precision denominator zero!"
+    precision = 0.0
+  else:
+    precision = float(true_positive)/float(ours_num)
+  if base_num == 0:
+    print "Warning: recall denominator zero!"
+    recall = 0.0
+  else:
+    float(true_positive)/float(base_num) 
+  return precision, recall, true_positive, ours_num, base_num
 
 
 # t1: id-data1, t2: id-data2
