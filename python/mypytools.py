@@ -190,7 +190,7 @@ def inner_join_x(t1, t2):
   for r2 in t2:
     assert len(r2) >= 2
     if r2[0] in d1:
-      rows.append([r2[0],] + d1[r2[0]] + r2[1:])
+      rows.append((r2[0],) + tuple(d1[r2[0]]) + tuple(r2[1:]))
   return rows
 
 def dedup(alist):
