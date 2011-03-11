@@ -1,5 +1,5 @@
 # for jython use: remove the encoding gbk. otherwise, add it.
-import random, csv, math, shutil, os, fnmatch, os.path, itertools, codecs, cStringIO
+import random, csv, math, shutil, os, fnmatch, os.path, itertools, codecs, cStringIO, sys
 
 # p and q are lists of discrete random variable distributions.
 def kl_divergence(p, q):
@@ -198,6 +198,11 @@ def dedup(alist):
   for i in alist:
     pool.add(i)
   return list(pool)
+  
+def process_command():
+  command = sys.argv[1]
+  args = sys.argv[2:]
+  eval(command+'('+','.join(args)+')')
 
 
 ################# code copied from other places ###################
@@ -278,4 +283,6 @@ if __name__ == '__main__':
   #simulate_random_guess()
   #for i in range(100): print multinomial_distribution([0.02, 0.48, 0.0001, 0.4999])
   #simulate_random_guess_set([1,]*234+[0,]*73, [1,]*234+[0,]*73, 1000000)
-  simulate_random_guess_set([1,]*62+[0,]*69+[1,]*234+[0,]*73, [1,]*62+[0,]*69+[1,]*234+[0,]*73)
+  #simulate_random_guess_set([1,]*62+[0,]*69+[1,]*234+[0,]*73, [1,]*62+[0,]*69+[1,]*234+[0,]*73)
+  process_command()
+  
