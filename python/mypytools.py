@@ -1,5 +1,5 @@
 # for jython use: remove the encoding gbk. otherwise, add it.
-import random, csv, math, shutil, os, fnmatch, os.path, itertools, codecs, cStringIO, sys
+import random, csv, math, shutil, os, fnmatch, os.path, itertools, codecs, cStringIO, sys, time
 
 # p and q are lists of discrete random variable distributions.
 def kl_divergence(p, q):
@@ -199,10 +199,23 @@ def dedup(alist):
     pool.add(i)
   return list(pool)
   
-def process_command():
-  command = sys.argv[1]
-  args = sys.argv[2:]
-  eval(command+'('+','.join(args)+')')
+def process_command(debug = True):
+  if debug:
+    starttime = time.time()
+    assert len(sys.argv) == 2, "Please provide one line of python code to execute."
+    py_stmt = sys.argv[1]
+    print "Python statement to execute:", py_stmt
+    eval(py_stmt)
+    endtime = time.time()
+    diff = endtime - starttime
+    print int(diff//3600), 'hours', int((diff%3600)//60), 'minutes', diff%60, 'seconds'
+    #print "Total execution hours:", (endtime-starttime)/3600, 
+  else:
+    #command = sys.argv[1]
+    #args = sys.argv[2:]
+    #eval(command+'('+','.join(args)+')')
+	assert len(sys.argv) == 2, "Please provide one line of python code to execute."
+	eval(sys.argv[1])
 
 
 ################# code copied from other places ###################
