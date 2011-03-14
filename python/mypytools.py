@@ -66,7 +66,7 @@ def remove_empty_lines(file):
     print >>f, l,
   f.close()
 
-  
+
 def count_lines(dir, pattern):
   files = os.listdir(dir)
   filecount = 0
@@ -112,7 +112,7 @@ def simulate_random_guess_set(dist_pool, testing_set, trials=100000):
   correct = 0
   for i in range(trials):
     for testpoint in testing_set:
-      if testpoint == random.choice(dist_pool): 
+      if testpoint == random.choice(dist_pool):
         correct += 1
   print "Correct guesses: %3.2f%%" % (float(correct)/(trials*len(testing_set)) * 100)
 
@@ -164,7 +164,7 @@ def precision_recall(label, ours, base):
     print "Warning: recall denominator zero!"
     recall = 0.0
   else:
-    recall = float(true_positive)/float(base_num) 
+    recall = float(true_positive)/float(base_num)
   return precision, recall, true_positive, ours_num, base_num
 
 
@@ -198,7 +198,7 @@ def dedup(alist):
   for i in alist:
     pool.add(i)
   return list(pool)
-  
+
 def process_command(debug = True):
   if debug:
     starttime = time.time()
@@ -209,7 +209,7 @@ def process_command(debug = True):
     endtime = time.time()
     diff = endtime - starttime
     print int(diff//3600), 'hours', int((diff%3600)//60), 'minutes', diff%60, 'seconds'
-    #print "Total execution hours:", (endtime-starttime)/3600, 
+    #print "Total execution hours:", (endtime-starttime)/3600,
   else:
     #command = sys.argv[1]
     #args = sys.argv[2:]
@@ -217,13 +217,15 @@ def process_command(debug = True):
 	assert len(sys.argv) == 2, "Please provide one line of python code to execute."
 	eval(sys.argv[1])
 
-def last_monday():
-  today = datetime.datetime.today() 
+def last_monday(today=None):
+  if today == None:
+    today = datetime.date.today()
   oneday = datetime.timedelta(days=1)
   while today.weekday()!=0:
     today -= oneday
   return today
-  
+
+
 def datetime_tostring(dt):
   return dt.strftime('%Y-%m-%d %H:%M:%S')
 
@@ -259,14 +261,14 @@ class UnicodeReader:
 
     def __iter__(self):
         return self
-  
+
 
 class UnicodeWriter:
     """
     A CSV writer which will write rows to CSV file "f",
     which is encoded in the given encoding.
     """
-	
+
     def __init__(self, f, dialect=csv.excel, encoding="utf-8", **kwds):
         # Redirect output to a queue
         self.queue = cStringIO.StringIO()
@@ -290,7 +292,7 @@ class UnicodeWriter:
         for row in rows:
             self.writerow(row)
 
-  
+
 
 if __name__ == '__main__':
   #p = [0.5, 0.1, 0.4]
@@ -300,12 +302,12 @@ if __name__ == '__main__':
 
   #r = '/Users/danithaca/Desktop/tianya/'
   #random_sample_files([r+'tiger-txt', r+'milk-txt'], r+'random70', 70)
-  
+
   #remove_empty_lines('../data/termsusage_v2.1.txt')
   #count_lines(r'D:\Work\+project\balance\digg_cls\classification_algorithm', '*.m')
   #simulate_random_guess()
   #for i in range(100): print multinomial_distribution([0.02, 0.48, 0.0001, 0.4999])
   #simulate_random_guess_set([1,]*234+[0,]*73, [1,]*234+[0,]*73, 1000000)
   #simulate_random_guess_set([1,]*62+[0,]*69+[1,]*234+[0,]*73, [1,]*62+[0,]*69+[1,]*234+[0,]*73)
-  process_command()
-  
+  #process_command()
+  print last_monday(datetime.date(2011, 3, 12))
