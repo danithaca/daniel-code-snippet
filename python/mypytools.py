@@ -1,5 +1,5 @@
 # for jython use: remove the encoding gbk. otherwise, add it.
-import random, csv, math, shutil, os, fnmatch, os.path, itertools, codecs, cStringIO, sys, time
+import random, csv, math, shutil, os, fnmatch, os.path, itertools, codecs, cStringIO, sys, time, datetime
 
 # p and q are lists of discrete random variable distributions.
 def kl_divergence(p, q):
@@ -216,6 +216,16 @@ def process_command(debug = True):
     #eval(command+'('+','.join(args)+')')
 	assert len(sys.argv) == 2, "Please provide one line of python code to execute."
 	eval(sys.argv[1])
+
+def last_monday():
+  today = datetime.datetime.today() 
+  oneday = datetime.timedelta(days=1)
+  while today.weekday()!=0:
+    today -= oneday
+  return today
+  
+def datetime_tostring(dt):
+  return dt.strftime('%Y-%m-%d %H:%M:%S')
 
 
 ################# code copied from other places ###################
