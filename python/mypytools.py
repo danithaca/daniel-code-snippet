@@ -207,6 +207,9 @@ def dedup(alist):
   for i in alist:
     pool.add(i)
   return list(pool)
+  
+def slice_col(thelist, col):
+  return [r[col] for r in thelist]
 
 def process_command(debug = True):
   if debug:
