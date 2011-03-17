@@ -149,7 +149,7 @@ def read_csv(filename, header=None, rowfilter=lambda x: True, colselector=None):
 
 
 def save_list_to_file(thelist, filename = None):
-  if filename = None:
+  if filename == None:
     n, filename = tempfile.mkstemp()
     print "Saving file to:", filename
   f = open(filename, 'w')
