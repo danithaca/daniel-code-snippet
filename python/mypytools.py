@@ -1,5 +1,5 @@
 # for jython use: remove the encoding gbk. otherwise, add it.
-import random, csv, math, shutil, os, fnmatch, os.path, itertools, codecs, cStringIO, sys, time, datetime
+import random, csv, math, shutil, os, fnmatch, os.path, itertools, codecs, cStringIO, sys, time, datetime, tempfile
 
 # p and q are lists of discrete random variable distributions.
 def kl_divergence(p, q):
@@ -147,6 +147,15 @@ def read_csv(filename, header=None, rowfilter=lambda x: True, colselector=None):
   f.close()
   return rows
 
+
+def save_list_to_file(thelist, filename = None):
+  if filename = None:
+    n, filename = tempfile.mkstemp()
+    print "Saving file to:", filename
+  f = open(filename, 'w')
+  for l in thelist:
+    print >>f, l
+  f.close()
 
 # base/ours: list of labels from the gold standard and our result.
 # return: precision, recall, true_positive, (true+false positive), (true positive + false negative)
