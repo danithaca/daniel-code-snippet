@@ -4,29 +4,23 @@
 
 # library requirement: numpy/scipy, bidict
 
-import numpy, itertools, scipy.sparse
+# TODO: contribute this to Numpy/Scipy, or to GoogleCode and then pypi. (note: can't contributed to igraph, which is written in C)
+
+import itertools, csv
+import numpy, scipy.sparse
 from bidict import bidict
 
 class BaseRandomWalk(object):
-  # alpha is the teleport factor
+  # alpha is the tele-port factor
   ALPHA = 0.15
-  # tolerance to stop interation. this is the percentage of change.
+  # tolerance to stop iteration. this is the percentage of change.
   TOLERANCE = 0.05
-  
-  def prepareY(self):
-    #return Y
-    assert False, 'Please override'
-    
-  def prepareS(self):
-    #return S
-    assert False, 'Please override'
-    
-  def prepareF0(self):
-    #return F0
-    assert False, 'Please override'
-    
-  def setupNodeMap(self):
-    assert False, 'Please override'
+
+
+  def initialize(self):
+    ''' You need to initialize the algorithm here '''
+    assert False, 'Please override.'
+
 
 
   def isFinished(self, Ft1, Ft0):
@@ -43,8 +37,9 @@ class BaseRandomWalk(object):
         return False
     else:
       return True
-      
-      
+
+
+
   # do the iteration.
   def iterate(self):
     Y = self.prepareY()
@@ -58,7 +53,7 @@ class BaseRandomWalk(object):
         print "Iterating round:", count
       count += 1
       # the iteration
-      Ft1 = (1-alpha) * S * Ft0 + alpha * Y
+      Ft1 = (1-self.ALPHA) * S * Ft0 + self.ALPHA * Y
       if self.isFinished(Ft1, Ft0):
         print "Finish iteration in round:", count
         break
@@ -96,7 +91,8 @@ class BaseRandomWalk(object):
     # compute S=D^-1*W
     S = D_neg * W
     S = S.tocsc()
-    #print A.todense()
+    self.S = S
+    #print S.todense()
       
   
       
@@ -107,6 +103,33 @@ class BaseRandomWalk(object):
     else:
       index = self.nodeMap[:node]
     return index
+
+
+  def readPairs(self, infile, directed=True):
+    """Return the rows of the pairs, appended with weight=1 if unset."""
+    f = open(infile, 'r')
+    reader =csv.reader(f)
+    rows = []
+
+    for row in reader:
+      if len(row) == 2:
+        row = (row[0], row[1], 1.0)
+      elif len(row) == 3:
+        weight = float(row[2])
+        assert weight >= 0, "The weight has to be greater than 0"
+        row = (row[0], row[1], weight)
+      else:
+        assert False, "A row has to have at least 1 source node and 1 destination node with an optional weight. File: "+infile
+      rows.append(row)
+
+      # if the pairs are undirected, append the other direction too.
+      if not directed:
+        rows.append((row[1], row[0], weight))
+
+    assert len(rows) == len(set(rows)), "Please remove duplicate rows."
+    f.close()
+    return rows
+
 
 
 class PageRank(BaseRandomWalk):
@@ -121,4 +144,11 @@ class AbsorbingRandomWalk(BaseRandomWalk):
 
 class LocalConsistencyGlobalConsistency(BaseRandomWalk):
   pass
-  
+
+
+
+''' The function call to PageRank algorithm '''
+def pagerank(infile, outfile, restart=[], directed=True, alpha=0.15, tolerance=0.01, iteration=100):
+  algorithm = PageRank()
+  assert infile.endswith('.p'), 'Currently we only support the input file as node-node pairs, and the suffix of the file has to be *.p'
+  rows = algorithm.readPairs(infile, directed)
