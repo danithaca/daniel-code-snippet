@@ -165,8 +165,9 @@ def _pagerank_iterate(S, Y, F0, alpha=0.15, tolerance=0.01):
 
 
 
-''' The function call to PageRank algorithm '''
+
 def pagerank(infile, outfile, restart=[], directed=True, alpha=0.15, tolerance=0.01):
+  '''This function calculates the pagerank algorithm. Successfully tested with the 3-nodes example in Page&Brin 1998'''
   assert infile.endswith('.p'), 'Currently we only support the input file as node-node pairs, and the suffix of the file has to be *.p'
   rows = _read_pairs(infile, directed)
   node_map, converted_rows = _convert_node_mapping(rows)
