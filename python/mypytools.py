@@ -242,6 +242,15 @@ def datetime_tostring(dt):
   return dt.strftime('%Y-%m-%d %H:%M:%S')
 
 
+def flip_coin(p):
+  return random.random() < p
+
+
+# flip coin n times, and see how many Trues it gets
+def flip_coin_n(p, n):
+  return sum([1 if flip_coin(p) else 0 for i in range(n)])
+
+
 ################# code copied from other places ###################
 
 class UTF8Recoder:
